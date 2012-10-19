@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+      <div class="container">	
+          <h1>Changepasswordform</h1>
+		  <form class="form-horizontal" action="/changepassword" method="post">  
+		      <input type="hidden" name="key" value="{{key}}">
+			  <fieldset>  
+                  <legend>Loginform</legend>  
+                  <div class="control-group"><input type="password" name="passwordold" class="span3" placeholder="old password"></div>
+				  <div class="control-group"><input type="password" name="newpassword" class="span3" placeholder="new password"></div>
+				  <div class="control-group"><input type="password" name="renewpassword" class="span3" placeholder="new password (repeat)"></div>
+                  <div class="control-group"><button type="submit" class="btn btn-primary">Change password</button></div>
+				  <div class="control-group"><a href="/">Back</a></div>
+		      </fieldset>
+          </form>  		  
+	  </div>  
+  </body>
+</html>
