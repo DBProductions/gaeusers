@@ -9,13 +9,9 @@ The gaeusers module offers a basic user management for your apps which running o
 After creating an instance of gaeusers, it offers the following methods.
 
     register_response = gaeusers.register(email)
-    
 	login_response = gaeusers.login(email, password)
-	
 	confirm_response = gaeusers.conform(confirm_link)
-	
 	losepassword_response = gaeusers.lose_password(email)
-	
 	changepassword_response = gaeusers.change_password(key, password_old, password_new, password_renew)
 	
-A basic structure how to use it, is shon in `main.py`
+How to use it, is shown in `main.py` templates using the bootstrap framework.
