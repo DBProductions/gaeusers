@@ -58,18 +58,35 @@ gaeusers = GaeUsers(options)
 
 <p>After creating an instance of gaeusers, it offers the following methods.</p>
 
-<pre><code>register_response = gaeusers.register(email)
+<pre><code>register_response = gaeusers.register(email)</code></pre>
 <strong>Responses:</strong>
-{"response":{"check":"not valid"}}
+<pre><code>{"response":{"check":"not valid"}}
 {"register":{"check":"present"}}
 {"register":{"check":"true", "key": "<userkey>"}}
 {"register":{"check":"empty"}}</code></pre>
 
-<pre><code>login_response = gaeusers.login(email, password)
-confirm_response = gaeusers.conform(confirm_link)
-losepassword_response = gaeusers.lose_password(email)
-changepassword_response = gaeusers.change_password(key, password_old, password_new, password_renew)
-</code></pre>
+<pre><code>login_response = gaeusers.login(email, password)</code></pre>
+<strong>Responses:</strong>
+<pre><code>{"login":{"check": "true","key": "<userkey>"}}
+{"login":{"check": "false"}}
+{"login":{"check": "not active"}}
+{"login":{"check": "unknown"}}
+{"login":{"check":"empty"}}</code></pre>
+
+<pre><code>confirm_response = gaeusers.conform(confirm_link)</code></pre>
+<strong>Responses:</strong>
+<pre><code>{"conform": "true"}
+{"conform": "false"}</code></pre>
+
+<pre><code>losepassword_response = gaeusers.lose_password(email)</code></pre>
+<strong>Responses:</strong>
+<pre><code>{"response":{"send":"true"}}</code></pre>
+
+<pre><code>changepassword_response = gaeusers.change_password(key, password_old, password_new, password_renew)</code></pre>
+<strong>Responses:</strong>
+<pre><code>{"response":{"check":"change"}}
+{"response":{"check":"not equal"}}
+{"response":{"check":"wrong"}}</code></pre>
 
 <p>How to use it, is shown in <code>main.py</code> templates using the bootstrap framework.</p>
       </section>
