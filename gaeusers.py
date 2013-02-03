@@ -19,7 +19,7 @@ class ActiveLinks(db.Model):
 class GaeUsers():
     """init gaeusers with options"""
     def __init__(self, options):
-        self.backlink = options['backlink']
+        self.backlink = 'http://' + options['appid'] + '.appspot.com/conform?link='
         self.mailstring = options['mailstring']
         self.CRYPT = options['crypt']
     """check if user key exists"""        
