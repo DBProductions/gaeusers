@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Gaeusers by DBProductions</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Gaeusers</h1>
+        <p>User handling for App Engine apps</p>
+
+        <p class="view"><a href="https://github.com/DBProductions/gaeusers">View the Project on GitHub <small>DBProductions/gaeusers</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/DBProductions/gaeusers/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/DBProductions/gaeusers/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/DBProductions/gaeusers">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>App Engine user management with gaeusers</h1>
+
+<p>The gaeusers module offers a basic user management for your apps which running on App Engine and written in Python.</p>
+
+<pre><code>from gaeusers import *
+options = {'backlink': 'http://&lt;app-id&gt;.appspot.com/conform?link=', 'mailstring': 'your_name &lt;your_mail&gt;', 'crypt':'md5'}
+gaeusers = GaeUsers(options)
+</code></pre>
+
+<p>After creating an instance of gaeusers, it offers the following methods.</p>
+
+<pre><code>register_response = gaeusers.register(email)
+login_response = gaeusers.login(email, password)
+confirm_response = gaeusers.conform(confirm_link)
+losepassword_response = gaeusers.lose_password(email)
+changepassword_response = gaeusers.change_password(key, password_old, password_new, password_renew)
+</code></pre>
+
+<p>How to use it, is shown in <code>main.py</code> templates using the bootstrap framework.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/DBProductions">DBProductions</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
