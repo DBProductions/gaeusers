@@ -58,12 +58,12 @@ gaeusers = GaeUsers(options)
 
 <p>After creating an instance of gaeusers, it offers the following methods.</p>
 
-<pre><code>register_response = gaeusers.register(email)</code></pre>
+<pre><code>register_response = gaeusers.register(email)
 <strong>Responses:</strong>
 {"response":{"check":"not valid"}}
 {"register":{"check":"present"}}
 {"register":{"check":"true", "key": "<userkey>"}}
-{"register":{"check":"empty"}}
+{"register":{"check":"empty"}}</code></pre>
 
 <pre><code>login_response = gaeusers.login(email, password)
 confirm_response = gaeusers.conform(confirm_link)
