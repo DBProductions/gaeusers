@@ -33,9 +33,28 @@
 <p>The gaeusers module offers you a basic user management for apps which running on App Engine Cloud.</p>
 
 <pre><code>from gaeusers import *
-options = {'backlink': 'http://&lt;app-id&gt;.appspot.com/conform?link=', 'mailstring': 'your_name &lt;your_mail&gt;', 'crypt':'md5'}
+options = {'appid': '<app-id>', 'mailstring': 'your_name &lt;your_mail&gt;', 'crypt':'md5'}
 gaeusers = GaeUsers(options)
 </code></pre>
+
+<table>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>appid</td>
+      <td>Application id</td>
+    </tr>
+    <tr>
+      <td>mailstring</td>
+      <td>String with name and email</td>
+    </tr>
+    <tr>
+      <td>crypt</td>
+      <td>md5 | sha1</td>
+    </tr>
+</table>
 
 <p>After creating an instance of gaeusers, it offers the following methods.</p>
 
@@ -50,6 +69,7 @@ changepassword_response = gaeusers.change_password(key, password_old, password_n
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/DBProductions">DBProductions</a></p>
+        <p><a href="http://www.dbproductions.de">DBProductions Homepage</a></p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
