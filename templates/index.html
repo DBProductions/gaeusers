@@ -1,32 +1,37 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-    <title>Mainpage</title>
+    <title>Main</title>
     <meta charset="utf-8">
 	<link href="css/bootstrap.min.css" rel="stylesheet">
   </head>
   <body>
       <div class="container">	      
-		  <h1>Mainpage</h1>	  
-	      <form class="form-horizontal" action="/login" method="post">  
-			  <fieldset>  
-                  <legend>Loginform</legend>  
-                  <div class="control-group"><input type="text" name="email" class="span3" placeholder="email"></div>
-			      <div class="control-group"><input type="password" name="password" class="span3" placeholder="password"></div>
-                  <div class="control-group"><button type="submit" class="btn btn-primary">Login</button> <a class="btn" href="/losepassword">Lose password</a></div>
-				  <div class="control-group"><span>{{msg}}</span></div>			  		      
-		      </fieldset>
-          </form>  
-		  
-		  <form class="form-horizontal" action="/register" method="post">  
-			  <fieldset>  
-                  <legend>Registerform</legend>  
-			      <div class="control-group"><input type="text" name="email" class="span3" placeholder="email"></div>
-			      <div class="control-group"><input type="password" name="password" class="span3" placeholder="password"></div>
-			      <div class="control-group"><input type="password" name="repassword" class="span3" placeholder="password (repeat)"></div>
-			      <div class="control-group"><button type="submit" class="btn btn-primary">Register</button></div> 
-				  <div class="control-group"><span>{{rmsg}}</span></div>			  
-          </form>  
+		  <h1>Mainpage</h1>	 
+          <div class="row">		
+              <div class="span6"> 		  
+				  <form class="form-horizontal" action="/login" method="post">  
+					  <fieldset>  
+						  <legend>Loginform</legend>  
+						  <div class="control-group"><input type="text" name="email" class="span3" placeholder="email" required="true"></div>
+						  <div class="control-group"><input type="password" name="password" class="span3" placeholder="password" required="true"></div>
+						  <div class="control-group"><button type="submit" class="btn btn-primary">Login</button> <a class="btn" href="/losepassword">Lose password</a></div>
+						  <div class="control-group"><span>{{msg}}</span></div>			  		      
+					  </fieldset>
+				  </form>  
+			  </div>
+			  <div class="span6"> 		  
+				  <form class="form-horizontal" action="/register" method="post">  
+					  <fieldset>  
+						  <legend>Registerform</legend>  
+						  <div class="control-group"><input type="text" name="email" class="span3" placeholder="email" required="true"></div>
+						  <div class="control-group"><input type="password" name="password" class="span3" placeholder="password" required="true"></div>
+						  <div class="control-group"><input type="password" name="repassword" class="span3" placeholder="password (repeat)" required="true"></div>
+						  <div class="control-group"><button type="submit" class="btn btn-primary">Register</button></div> 
+						  <div class="control-group"><span>{{rmsg}}</span></div>			  
+				  </form>  
+			  </div>
+		  </div>
 	  </div>  
   </body>
 </html>

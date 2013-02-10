@@ -16,23 +16,23 @@ class ActiveLinks(db.Model):
     user = db.StringProperty()
     link = db.StringProperty()
 
-class GaeUsers():
-    """init gaeusers with options"""
+class GaeUsers():    
     def __init__(self, options):
+        """init gaeusers with options"""
         self.backlink = 'http://' + options['appid'] + '.appspot.com/conform?link='
         self.mailstring = options['mailstring']
-        self.CRYPT = options['crypt']
-    """check if user key exists"""        
+        self.CRYPT = options['crypt']            
     def check_userkey(self, key):
-        return memcache.get(key)        
-    """crypt string"""
+        """check if user key exists"""
+        return memcache.get(key)            
     def crypt_string(self, string):
+        """crypt string"""
         if self.CRYPT == 'md5':
             return hashlib.md5(string).hexdigest()
         elif self.CRYPT == 'sha1':
-            return hashlib.sha1(string).hexdigest()
-    """register a user"""
+            return hashlib.sha1(string).hexdigest()    
     def register(self, email, password, repassword):
+        """register a user"""
         if email != '':
             check = False
             if len(email) > 5:
@@ -40,7 +40,7 @@ class GaeUsers():
                     if password == repassword:
                         check = True            
             if check == False:
-                return '{"response":{"check":"not valid"}}'
+                return '{"register":{"check":"not valid"}}'
             else:
                 query = db.GqlQuery("SELECT * FROM Users WHERE email= :1", email)
                 result = query.get()
@@ -61,17 +61,19 @@ class GaeUsers():
                     mail.send_mail(sender=self.mailstring, to="<"+email+">", subject="User registration", body=messagebody)
                     return '{"register":{"check":"true", "key": "' + userkey + '"}}'
         else:
-            return '{"register":{"check":"empty"}}'
-    """lose password"""
+            return '{"register":{"check":"empty"}}'    
     def lose_password(self, email):
+        """lose password"""
         u_query = db.GqlQuery("SELECT * FROM Users WHERE email = :1", email)
         uresult = u_query.get()
         if uresult:
             messagebody = template.render('templates/email.html', {'password':uresult.password, 'link': ''})
             mail.send_mail(sender=self.mailstring, to="<"+uresult.email+">", subject="User password", body=messagebody)
             return '{"response":{"send":"true"}}'
-    """change a password"""
+        else:
+            return '{"response":{"send":"empty"}}'    
     def change_password(self, userkey, passwordold, newpassword, renewpassword):
+        """change a password"""
         key = memcache.get(userkey)
         u_query = db.GqlQuery("SELECT * FROM Users WHERE __key__ = :1", db.Key(key))
         uresult = u_query.get()
@@ -85,9 +87,9 @@ class GaeUsers():
             else:
                 return '{"response":{"check":"not equal"}}'
         else:
-            return '{"response":{"check":"wrong"}}'
-    """conform registration"""
+            return '{"response":{"check":"wrong"}}'    
     def conform(self, link):
+        """conform registration"""
         query = db.GqlQuery("SELECT * FROM ActiveLinks WHERE link = :1", link)
         result = query.fetch(1)
         if result:
@@ -98,9 +100,9 @@ class GaeUsers():
             db.delete(result)
             return '{"conform": "true"}'
         else:
-            return '{"conform": "false"}'
-    """do login"""
+            return '{"conform": "false"}'    
     def login(self, email, password):
+        """do login"""
         if email != '' and password != '':
             password = self.crypt_string(password)    
             query = db.GqlQuery("SELECT * FROM Users WHERE email = :1 AND password = :2", email, password)
@@ -126,4 +128,5 @@ class GaeUsers():
         else:
             return '{"login":{"check":"empty"}}'
     def logout(self, key):
+        """do logout"""
         memcache.delete(key)

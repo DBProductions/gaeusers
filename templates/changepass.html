@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-    <title></title>
+    <title>Change password</title>
     <meta charset="utf-8">
 	<link href="css/bootstrap.min.css" rel="stylesheet">
   </head>
@@ -12,9 +12,9 @@
 		      <input type="hidden" name="key" value="{{key}}">
 			  <fieldset>  
                   <legend>Loginform</legend>  
-                  <div class="control-group"><input type="password" name="passwordold" class="span3" placeholder="old password"></div>
-				  <div class="control-group"><input type="password" name="newpassword" class="span3" placeholder="new password"></div>
-				  <div class="control-group"><input type="password" name="renewpassword" class="span3" placeholder="new password (repeat)"></div>
+                  <div class="control-group"><input type="password" name="passwordold" class="span3" placeholder="old password" required="true"></div>
+				  <div class="control-group"><input type="password" name="newpassword" class="span3" placeholder="new password" required="true"></div>
+				  <div class="control-group"><input type="password" name="renewpassword" class="span3" placeholder="new password (repeat)" required="true"></div>
                   <div class="control-group"><button type="submit" class="btn btn-primary">Change password</button></div>
 				  <div class="control-group"><a class="btn" href="/">Back</a></div>
 				  <div class="control-group"><span>{{msg}}</span></div>	

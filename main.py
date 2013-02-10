@@ -1,5 +1,5 @@
-import os, datetime, hashlib, webapp2, json
-from google.appengine.ext.webapp import template
+import os, datetime, hashlib, webapp2, json, jinja2
+jinja_environment = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
 
 from gaeusers import *
 
@@ -9,11 +9,11 @@ gaeusers = GaeUsers(options)
 
 class BaseHandler(webapp2.RequestHandler):
     def getTemp(self, temp_file, temp_vars):
-        path = os.path.join(os.path.dirname(__file__), 'templates/' + temp_file)
-        return template.render(path, temp_vars)
+        template = jinja_environment.get_template('templates/' + temp_file)
+        return template.render(temp_vars)
 
 class MainHandler(BaseHandler):
-    def get(self):        
+    def get(self):
         userkey = username = self.request.cookies.get('gaeuserkey', '')
         if None == gaeusers.check_userkey(userkey):
             self.response.out.write( self.getTemp("index.html", {}) )
@@ -46,7 +46,7 @@ class RegisterHandler(BaseHandler):
         registerresponse = gaeusers.register(email, password, repassword)
         registerresponseobj = json.loads(registerresponse)
         if 'key' in registerresponseobj['register']:
-            self.response.out.write('now activate your acount with visiting the link we send you')
+            self.response.out.write(self.getTemp("index.html", {'rmsg':'Now activate your acount with visiting the link we send to you.'}))
         else:
             self.response.out.write(self.getTemp("index.html", {'rmsg':registerresponseobj['register']['check']}))
 
@@ -61,8 +61,11 @@ class LosepasswordHandler(BaseHandler):
     def post(self):
         email = self.request.get("email")
         response = gaeusers.lose_password(email)
-        responseobj = json.loads(response)        
-        self.response.out.write(self.getTemp("losepass.html", {"msg":"Email send successful: " + responseobj['response']['send']}))
+        responseobj = json.loads(response)
+        if responseobj['response']['send'] == 'true':
+            self.response.out.write(self.getTemp("losepass.html", {"msg":"Email send successful: " + responseobj['response']['send']}))
+        else:
+            self.response.out.write(self.getTemp("losepass.html", {"msg": responseobj['response']['send']}))
 
 class ChangepasswordHandler(BaseHandler):
     def get(self):
