@@ -60,7 +60,7 @@ gaeusers = GaeUsers(options)
 
 <strong>Register</strong>
 <pre><code>response = gaeusers.register(email)</code></pre>
-<strong>Responses:</strong>
+<p>Responses:</p>
 <pre><code>{"response":{"check":"not valid"}}
 {"register":{"check":"present"}}
 {"register":{"check":"true", "key": "&lt;userkey>"}}
@@ -68,7 +68,7 @@ gaeusers = GaeUsers(options)
 <hr>
 <strong>Login</strong>
 <pre><code>response = gaeusers.login(email, password)</code></pre>
-<strong>Responses:</strong>
+<p>Responses:</p>
 <pre><code>{"login":{"check": "true","key": "&lt;userkey>"}}
 {"login":{"check": "false"}}
 {"login":{"check": "not active"}}
@@ -77,18 +77,18 @@ gaeusers = GaeUsers(options)
 <hr>
 <strong>Conform</strong>
 <pre><code>response = gaeusers.conform(confirm_link)</code></pre>
-<strong>Responses:</strong>
+<p>Responses:</p>
 <pre><code>{"conform": "true"}
 {"conform": "false"}</code></pre>
 <hr>
 <strong>Lose password</strong>
 <pre><code>response = gaeusers.lose_password(email)</code></pre>
-<strong>Responses:</strong>
+<p>Responses:</p>
 <pre><code>{"response":{"send":"true"}}</code></pre>
 <hr>
 <strong>Change password</strong>
 <pre><code>response = gaeusers.change_password(key, password_old, password_new, password_renew)</code></pre>
-<strong>Responses:</strong>
+<p>Responses:</p>
 <pre><code>{"response":{"check":"change"}}
 {"response":{"check":"not equal"}}
 {"response":{"check":"wrong"}}</code></pre>
