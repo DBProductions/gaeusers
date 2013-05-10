@@ -93,6 +93,16 @@ gaeusers = GaeUsers(options)
 {"response":{"check":"not equal"}}
 {"response":{"check":"wrong"}}</code></pre>
 
+<hr>
+<strong>Users model</strong>
+<pre><code>class Users(db.Model):
+    email = db.StringProperty(required=True)
+    password = db.StringProperty()
+    active = db.BooleanProperty()
+    created = db.DateTimeProperty(auto_now_add=True)
+    logins = db.IntegerProperty()
+    lastlogin = db.DateTimeProperty(auto_now=True)</code></pre>
+
 <p>How to use it, is shown in <code>main.py</code> templates using the bootstrap framework.</p>
       </section>
       <footer>
