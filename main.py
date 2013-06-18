@@ -4,7 +4,7 @@ jinja_environment = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.di
 from gaeusers import *
 
 # options for gaeusers
-options = {'appid': '<app-id>', 'mailstring': 'your_name <your_email>', 'crypt':'md5'}
+options = {'appid': 'app-id', 'mailstring': 'your_name <your_email>', 'crypt':'md5'}
 gaeusers = GaeUsers(options)
 
 class BaseHandler(webapp2.RequestHandler):
@@ -14,11 +14,12 @@ class BaseHandler(webapp2.RequestHandler):
 
 class MainHandler(BaseHandler):
     def get(self):
-        userkey = username = self.request.cookies.get('gaeuserkey', '')
+        userkey = self.request.cookies.get('gaeuserkey', '')
         if None == gaeusers.check_userkey(userkey):
             self.response.out.write( self.getTemp("index.html", {}) )
         else:
-            self.response.out.write( self.getTemp("profile.html", {}) )
+            email = gaeusers.get_useremail(userkey)
+            self.response.out.write( self.getTemp("profile.html", {'email':email}) )
 
 class LoginHandler(BaseHandler):
     def post(self):

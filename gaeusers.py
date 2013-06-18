@@ -24,7 +24,13 @@ class GaeUsers():
         self.CRYPT = options['crypt']            
     def check_userkey(self, key):
         """check if user key exists"""
-        return memcache.get(key)            
+        return memcache.get(key)          
+    def get_useremail(self, key):
+        """get user email"""
+        key = memcache.get(key)
+        u_query = db.GqlQuery("SELECT * FROM Users WHERE __key__ = :1", db.Key(key))
+        uresult = u_query.get()
+        return str(uresult.email)  
     def crypt_string(self, string):
         """crypt string"""
         if self.CRYPT == 'md5':
