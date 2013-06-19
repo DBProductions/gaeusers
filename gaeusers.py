@@ -44,7 +44,9 @@ class GaeUsers():
             if len(email) > 5:
                 if re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", email) != None:
                     if password == repassword:
-                        check = True            
+                        check = True          
+                    else:
+                        return '{"register":{"check":"not equal"}}'
             if check == False:
                 return '{"register":{"check":"not valid"}}'
             else:
