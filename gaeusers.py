@@ -30,7 +30,12 @@ class GaeUsers():
         key = memcache.get(key)
         u_query = db.GqlQuery("SELECT * FROM Users WHERE __key__ = :1", db.Key(key))
         uresult = u_query.get()
-        return str(uresult.email)  
+        return str(uresult.email)
+    def generate_password(self):
+        password = ''
+        for i in range(8):
+            password += chr(random.randint(65,90))
+        return password
     def crypt_string(self, string):
         """crypt string"""
         if self.CRYPT == 'md5':
@@ -65,7 +70,7 @@ class GaeUsers():
                     userkey = email + '_' + str(u.key())
                     userkey = self.crypt_string(userkey)                        
                     memcache.add(userkey, str(u.key()))
-                    messagebody = template.render('templates/email.html', {'link': link}) 
+                    messagebody = template.render('templates/activate_email.html', {'link': link}) 
                     mail.send_mail(sender=self.mailstring, to="<"+email+">", subject="User registration", body=messagebody)
                     return '{"register":{"check":"true", "key": "' + userkey + '"}}'
         else:
@@ -75,8 +80,11 @@ class GaeUsers():
         u_query = db.GqlQuery("SELECT * FROM Users WHERE email = :1", email)
         uresult = u_query.get()
         if uresult:
-            messagebody = template.render('templates/email.html', {'password':uresult.password, 'link': ''})
+            password = self.generate_password()
+            messagebody = template.render('templates/losepassword_email.html', {'password':password})
             mail.send_mail(sender=self.mailstring, to="<"+uresult.email+">", subject="User password", body=messagebody)
+            uresult.password = self.crypt_string(password)
+            uresult.put()
             return '{"response":{"send":"true"}}'
         else:
             return '{"response":{"send":"empty"}}'    
@@ -106,9 +114,9 @@ class GaeUsers():
             uresult.active = True
             db.put(uresult)
             db.delete(result)
-            return '{"conform": "true"}'
+            return '{"response":{"conform": "true"}}'
         else:
-            return '{"conform": "false"}'    
+            return '{"response":{"conform": "false"}}'    
     def login(self, email, password):
         """do login"""
         if email != '' and password != '':

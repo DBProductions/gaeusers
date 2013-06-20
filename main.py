@@ -4,7 +4,8 @@ jinja_environment = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.di
 from gaeusers import *
 
 # options for gaeusers
-options = {'appid': 'app-id', 'mailstring': 'your_name <your_email>', 'crypt':'md5'}
+#options = {'appid': 'app-id', 'mailstring': 'your_name <your_email>', 'crypt':'md5'}
+options = {'appid': 'gae-users', 'mailstring': 'Dennis <dennis.braun79@googlemail.com>', 'crypt':'md5'}
 gaeusers = GaeUsers(options)
 
 responsemsgs = {
@@ -17,6 +18,8 @@ responsemsgs = {
                  'present':'Email is registered.',
                  'empty':'Email is empty.',
                  'end':'Now activate your acount with visiting the link we send to you.'},
+    'conform': {'true':'You have activate your account successful.',
+                'false':'There is no account which can get activated.'},
     'losepassword': {'empty':'Not registered.',
                      'true':'Email send successful.'},
     'changepassword': {'change':'Your password has been changed.',
@@ -75,11 +78,14 @@ class RegisterHandler(BaseHandler):
             responsemsg = responsemsgs['register'][responseobj['register']['check']]
             self.response.out.write(self.getTemp("index.html", {'rmsg':responsemsg}))
 
-class ConformHandler(webapp2.RequestHandler):
+class ConformHandler(BaseHandler):
     """ConformHandler for conform"""
     def get(self):
         confirm_link = self.request.get("link")
-        self.response.out.write(gaeusers.conform(confirm_link))
+        response = gaeusers.conform(confirm_link)
+        responseobj = json.loads(response)
+        responsemsg = responsemsgs['conform'][responseobj['response']['conform']]
+        self.response.out.write(self.getTemp("conform.html", {"msg":responsemsg}))
 
 class LosepasswordHandler(BaseHandler):
     """LosepasswordHandler"""
