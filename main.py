@@ -4,8 +4,7 @@ jinja_environment = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.di
 from gaeusers import *
 
 # options for gaeusers
-#options = {'appid': 'app-id', 'mailstring': 'your_name <your_email>', 'crypt':'md5'}
-options = {'appid': 'gae-users', 'mailstring': 'Dennis <dennis.braun79@googlemail.com>', 'crypt':'md5'}
+options = {'appid': 'gae-users', 'mailstring': 'your_name <your_email>', 'crypt':'md5'}
 gaeusers = GaeUsers(options)
 
 responsemsgs = {
