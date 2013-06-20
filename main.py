@@ -25,11 +25,13 @@ responsemsgs = {
 }
 
 class BaseHandler(webapp2.RequestHandler):
+    """BaseHandler to extend"""
     def getTemp(self, temp_file, temp_vars):
         template = jinja_environment.get_template('templates/' + temp_file)
         return template.render(temp_vars)
 
 class MainHandler(BaseHandler):
+    """MainHandler for index or profile"""
     def get(self):
         userkey = self.request.cookies.get('gaeuserkey', '')
         if None == gaeusers.check_userkey(userkey):
@@ -39,6 +41,7 @@ class MainHandler(BaseHandler):
             self.response.out.write(self.getTemp("profile.html", {'email':email}))
 
 class LoginHandler(BaseHandler):
+    """LoginHandler for login"""
     def post(self):
         email = self.request.get("email")
         password = self.request.get("password")        
@@ -52,12 +55,14 @@ class LoginHandler(BaseHandler):
             self.response.out.write(self.getTemp("index.html", {'msg':responsemsg}))            
 
 class LogoutHandler(webapp2.RequestHandler):
+    """LogoutHandler for logout"""
     def get(self):
         userkey = username = self.request.cookies.get('gaeuserkey', '')
         gaeusers.logout(userkey)
         self.redirect('/')
         
 class RegisterHandler(BaseHandler):
+    """RegisterHandler for register"""
     def post(self):
         email = self.request.get("email")
         password = self.request.get("password")
@@ -71,11 +76,13 @@ class RegisterHandler(BaseHandler):
             self.response.out.write(self.getTemp("index.html", {'rmsg':responsemsg}))
 
 class ConformHandler(webapp2.RequestHandler):
+    """ConformHandler for conform"""
     def get(self):
         confirm_link = self.request.get("link")
         self.response.out.write(gaeusers.conform(confirm_link))
 
 class LosepasswordHandler(BaseHandler):
+    """LosepasswordHandler"""
     def get(self):
         self.response.out.write(self.getTemp("losepass.html", {}))
     def post(self):
@@ -89,6 +96,7 @@ class LosepasswordHandler(BaseHandler):
             self.response.out.write(self.getTemp("losepass.html", {"msg":responsemsg}))
 
 class ChangepasswordHandler(BaseHandler):
+    """ChangepasswordHandler"""
     def get(self):
         userkey = username = self.request.cookies.get('gaeuserkey', '')
         self.response.out.write(self.getTemp("changepass.html", {'key':userkey}))
