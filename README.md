@@ -1,5 +1,9 @@
-# App Engine user management with gaeusers
+#  gaeusers
 
-Visit: [GitHub Page](http://dbproductions.github.com/gaeusers/)
+A simple user management for App Engine applications.
 
-Visit: [Appspot](http://gae-users.appspot.com/)
+Documentation:  
+[GitHub Page](http://dbproductions.github.com/gaeusers/)
+
+Live example:  
+[Appspot](http://gae-users.appspot.com/)
