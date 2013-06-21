@@ -16,7 +16,7 @@
     <div class="wrapper">
       <header>
         <h1>Gaeusers</h1>
-        <p>User handling for App Engine apps</p>
+        <p>A simple user management for App Engine applications.</p>
 
         <p class="view"><a href="https://github.com/DBProductions/gaeusers">View the Project on GitHub <small>DBProductions/gaeusers</small></a></p>
 
@@ -61,10 +61,12 @@ gaeusers = GaeUsers(options)
 <strong>Register</strong>
 <pre><code>response = gaeusers.register(email)</code></pre>
 <p>Responses:</p>
-<pre><code>{"response":{"check":"not valid"}}
+<pre><code>{"register":{"check":"not equal"}}
+{"register":{"check":"not valid"}}
 {"register":{"check":"present"}}
 {"register":{"check":"true", "key": "&lt;userkey>"}}
-{"register":{"check":"empty"}}</code></pre>
+{"register":{"check":"empty"}}
+{"register":{"check":"end"}}</code></pre>
 <hr>
 <strong>Login</strong>
 <pre><code>response = gaeusers.login(email, password)</code></pre>
@@ -84,7 +86,8 @@ gaeusers = GaeUsers(options)
 <strong>Lose password</strong>
 <pre><code>response = gaeusers.lose_password(email)</code></pre>
 <p>Responses:</p>
-<pre><code>{"response":{"send":"true"}}</code></pre>
+<pre><code>{"response":{"send":"empty"}}
+{"response":{"send":"true"}}</code></pre>
 <hr>
 <strong>Change password</strong>
 <pre><code>response = gaeusers.change_password(key, password_old, password_new, password_renew)</code></pre>
