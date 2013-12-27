@@ -1,25 +1,27 @@
-<!DOCTYPE HTML>
-<html>
-    <head>
-        <title>Lose password</title>
-        <meta charset="utf-8">
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-    </head>
-    <body>
-        <div class="container">	
-            <h1>Losepasswordpage</h1>
-            <form class="form-horizontal" action="/losepassword" method="post">  
-                <fieldset>  
-                    <legend>Losepasswordform</legend>  
-                    <div class="control-group">
-                        <input type="text" name="email" class="span3" placeholder="email" required="true">
-                    </div>
-                    <div class="control-group">
-                        <button type="submit" class="btn btn-primary">Get password</button> <a class="btn" href="/">Back</a>
-                    </div>
-                    <div class="control-group"><span>{{msg}}</span></div>	
-                </fieldset>
-            </form>  		  
-        </div>
-    </body>
-</html>
+{% extends "templates/index.html" %}
+{% block indexcontent %}
+    <div style="text-align:right;">
+        <a href="/losepassword?locale=en">English</a> | 
+        <a href="/losepassword?locale=zh">中文</a>
+    </div>
+    <h1>{{title}}</h1>
+    <form class="form-horizontal" action="/losepassword" method="post">  
+        <fieldset>  
+            <legend>{{title}}</legend>  
+            <div class="control-group">
+                <input type="text" name="email" class="span3" placeholder="{{email}}" required="true">
+            </div>
+            <div class="control-group">
+                <button type="submit" class="btn btn-primary">{{send}}</button>
+            </div>
+            <div class="control-group">
+                <a class="btn" href="/">{{back}}</a>
+            </div>
+            <div class="control-group">
+                <span{% if error %} class="lead text-error"{% endif %}>
+                    {{msg}}
+                </span>
+            </div>	
+        </fieldset>
+    </form>  		  
+{% endblock %}

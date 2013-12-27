@@ -1,15 +1,10 @@
-<!DOCTYPE HTML>
-<html>
-    <head>
-        <title>Conform</title>
-        <meta charset="utf-8">
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-    </head>
-    <body>
-        <div class="container">	
-            <h1>Conform</h1>
-            <div class="control-group"><span>{{msg}}</span></div>
-            <a class="btn" href="/">Startpage</a>
-        </div>
-    </body>
-</html>
+{% extends "templates/index.html" %}
+{% block indexcontent %}
+    <h1>{{title}}</h1>
+    <div class="control-group">
+        <span>{{msg}}</span>
+    </div>
+    <div class="control-group">
+        <a class="btn" href="/">{{backbtn}}</a>
+    </div>
+{% endblock %}

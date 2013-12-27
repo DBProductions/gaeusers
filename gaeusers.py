@@ -11,39 +11,149 @@ class Users(db.Model):
     created = db.DateTimeProperty(auto_now_add=True)
     logins = db.IntegerProperty()
     lastlogin = db.DateTimeProperty(auto_now=True)
+    language = db.StringProperty(default='en')
 
 class ActiveLinks(db.Model):
     user = db.StringProperty()
     link = db.StringProperty()
 
-class GaeUsers():    
+class PasswordLinks(db.Model):
+    user = db.StringProperty()
+    link = db.StringProperty()
+
+class GaeUsers():
+    """
+    GaeUsers
+    """
     def __init__(self, options):
-        """init gaeusers with options"""
+        """
+        Init gaeusers with options.
+
+        Parameters
+        ----------
+        options - dict
+            appid
+            mailstring
+            crypt
+            crypt_rounds
+            password_salt
+        """
         self.backlink = 'http://' + options['appid'] + '.appspot.com/conform?link='
+        self.passlink = 'http://' + options['appid'] + '.appspot.com/setpassword?link='
+        self.password_salt = options['password_salt']
+        self.crypt_rounds = options['crypt_rounds']
         self.mailstring = options['mailstring']
-        self.CRYPT = options['crypt']            
+        self.crypt = options['crypt']
     def check_userkey(self, key):
-        """check if user key exists"""
-        return memcache.get(key)          
+        """
+        Check if user key exists in memcache.
+
+        Parameters
+        ----------
+        key: key in memcache
+        """
+        return memcache.get(key)
+    def set_userkey(self, email, db_key, set_cache):
+        """
+        Set user key.
+        """
+        userkey = email + '_' + str(db_key)
+        userkey = self.crypt_string(userkey)                        
+        if set_cache == True:
+            memcache.add(userkey, str(db_key))
+        return userkey 
     def get_useremail(self, key):
-        """get user email"""
+        """
+        Get user email.
+
+        Parameters
+        ----------
+        key: key in memcache
+
+        Returns
+        -------
+        Email from the user as string.
+        """
         key = memcache.get(key)
         u_query = db.GqlQuery("SELECT * FROM Users WHERE __key__ = :1", db.Key(key))
         uresult = u_query.get()
         return str(uresult.email)
-    def generate_password(self):
-        password = ''
-        for i in range(8):
-            password += chr(random.randint(65,90))
-        return password
+    def get_passworduser(self, link):
+        """
+        Get user who want to change password.
+
+        Parameters
+        ----------
+        link: link in data store
+
+        Returns
+        -------
+        Returns the user key as string or None.
+        """
+        u_query = db.GqlQuery("SELECT * FROM PasswordLinks WHERE link = :1", str(link))
+        uresult = u_query.get()
+        if uresult:
+            return str(uresult.user)
+        else:
+            return None
+    def get_user(self, key):
+        """
+        Get a user from data store.
+
+        Parameters
+        ----------
+        key: key in the data store
+
+        Returns
+        -------
+        Users data store object.
+        """
+        u_query = db.GqlQuery("SELECT * FROM Users WHERE __key__ = :1", db.Key(key))
+        uresult = u_query.get()
+        return uresult
     def crypt_string(self, string):
-        """crypt string"""
-        if self.CRYPT == 'md5':
-            return hashlib.md5(string).hexdigest()
-        elif self.CRYPT == 'sha1':
-            return hashlib.sha1(string).hexdigest()    
-    def register(self, email, password, repassword):
-        """register a user"""
+        """
+        Crypt string
+
+        Parameters
+        ----------
+        string: string to be crypt
+
+        Returns
+        -------
+        A crypt string.
+        """
+        if self.crypt == 'md5':
+            for i in range(self.crypt_rounds):
+                crypt_string = hashlib.md5(self.password_salt + string).hexdigest()
+            return crypt_string
+        elif self.crypt == 'sha1':
+            for i in range(self.crypt_rounds):
+                crypt_string = hashlib.sha1(self.password_salt + string).hexdigest()
+            return crypt_string
+    def register(self, email, password, repassword, lang, subject):
+        """
+        Register a user.
+
+        Parameters
+        ----------
+        email: email to register
+
+        password: password to register
+
+        repassword: repeat of password to register
+
+        lang: current language
+
+        subject: email subject
+
+        Returns
+        -------
+        dict - Response
+            register
+            error
+            key
+        """
         if email != '':
             check = False
             if len(email) > 5:
@@ -51,45 +161,113 @@ class GaeUsers():
                     if password == repassword:
                         check = True          
                     else:
-                        return '{"register":{"check":"not equal"}}'
+                        return dict(register=False, error="not equal")
             if check == False:
-                return '{"register":{"check":"not valid"}}'
+                return dict(register=False, error="not valid")
             else:
                 query = db.GqlQuery("SELECT * FROM Users WHERE email= :1", email)
                 result = query.get()
                 if result:
-                    return '{"register":{"check":"present"}}'
+                    return dict(register=False, error="present")
                 else:
                     password = self.crypt_string(password)            
-                    u = Users(email = email, password = password, active = False)
+                    u = Users(email = email, password = password, active = False, language = lang)
                     u.put()
-                    link_key = str( random.randrange(0, 101, 2) )
+                    link_key = str( random.randrange(0, 10001, 2) + 1000 )
+                    link_key = self.crypt_string(link_key)
                     link = self.backlink + link_key
                     l = ActiveLinks(user=str(u.key()),link=link_key)
                     l.put()
-                    userkey = email + '_' + str(u.key())
-                    userkey = self.crypt_string(userkey)                        
-                    memcache.add(userkey, str(u.key()))
-                    messagebody = template.render('templates/activate_email.html', {'link': link}) 
-                    mail.send_mail(sender=self.mailstring, to="<"+email+">", subject="User registration", body=messagebody)
-                    return '{"register":{"check":"true", "key": "' + userkey + '"}}'
+                    userkey = self.set_userkey(email, str(u.key()), False)
+                    tpl = 'templates/emails/activate_' + lang + '.html'
+                    messagebody = template.render(tpl, {'link': link}) 
+                    mail.send_mail(sender=self.mailstring, to="<"+email+">", subject=subject, body=messagebody)
+                    return dict(register=True, key=userkey)
         else:
-            return '{"register":{"check":"empty"}}'    
-    def lose_password(self, email):
-        """lose password"""
+            return dict(register=False, error="empty")    
+    def lose_password(self, email, lang, subject):
+        """
+        Lose password request.
+
+        Parameters
+        ----------
+        email: email from the requesting user
+
+        lang: selected languageto select the right template
+
+        subject: mail subject
+
+        Returns
+        -------
+        dict - Response
+            response
+        """
         u_query = db.GqlQuery("SELECT * FROM Users WHERE email = :1", email)
         uresult = u_query.get()
         if uresult:
-            password = self.generate_password()
-            messagebody = template.render('templates/losepassword_email.html', {'password':password})
-            mail.send_mail(sender=self.mailstring, to="<"+uresult.email+">", subject="User password", body=messagebody)
-            uresult.password = self.crypt_string(password)
-            uresult.put()
-            return '{"response":{"send":"true"}}'
+            p_query = db.GqlQuery("SELECT * FROM PasswordLinks WHERE user = :1", str(uresult.key()))
+            presult = p_query.get()
+            if presult:
+                link_key = presult.link
+            else:
+                link_key = str( random.randrange(0, 10001, 2) + 1000 )
+                link_key = self.crypt_string(link_key)
+                l = PasswordLinks(user=str(uresult.key()), link=link_key)
+                l.put()
+            link = self.passlink + link_key            
+            tpl = 'templates/emails/losepassword_' + lang + '.html'
+            messagebody = template.render(tpl, {'link':link})
+            mail.send_mail(sender=self.mailstring, to="<"+uresult.email+">", subject=subject, body=messagebody)
+            return dict(response=True)
         else:
-            return '{"response":{"send":"empty"}}'    
+            return dict(response="empty")
+    def set_password(self, link, password, repassword):
+        """
+        Set a password.
+
+        Parameters
+        ----------
+        password: the new password
+
+        repassword: the new password as repeat
+
+        Returns
+        -------
+        dict - Response
+            response
+        """
+        query = db.GqlQuery("SELECT * FROM PasswordLinks WHERE link = :1", link)
+        result = query.get()
+        if result:            
+            if password != repassword:
+                return dict(response='not equal')
+            else:
+                u_query = db.GqlQuery("SELECT * FROM Users WHERE __key__ = :1", db.Key(result.user))
+                uresult = u_query.get()
+                password = self.crypt_string(password)
+                uresult.password = password
+                uresult.put()
+                db.delete(result)
+                return dict(response='set')
+        else:
+            return dict(response='not present')
     def change_password(self, userkey, passwordold, newpassword, renewpassword):
-        """change a password"""
+        """
+        Change a password.
+
+        Parameters
+        ----------
+        passwordold: the current password
+
+        newpassword: the new password
+
+        renewpassword: the new password as repeat
+
+        Returns
+        -------
+        dict - Response
+            response
+        """
         key = memcache.get(userkey)
         u_query = db.GqlQuery("SELECT * FROM Users WHERE __key__ = :1", db.Key(key))
         uresult = u_query.get()
@@ -99,13 +277,24 @@ class GaeUsers():
                 newpassword = self.crypt_string(newpassword)                
                 uresult.password = newpassword
                 uresult.put()
-                return '{"response":{"check":"change"}}'
+                return dict(response="change")
             else:
-                return '{"response":{"check":"not equal"}}'
+                return dict(response="not equal")
         else:
-            return '{"response":{"check":"wrong"}}'    
+            return dict(response="wrong")
     def conform(self, link):
-        """conform registration"""
+        """
+        Conform registration and activate the user.
+
+        Parameters
+        ----------
+        link: link send via email
+
+        Returns
+        -------
+        dict - Response
+            response
+        """
         query = db.GqlQuery("SELECT * FROM ActiveLinks WHERE link = :1", link)
         result = query.fetch(1)
         if result:
@@ -114,11 +303,25 @@ class GaeUsers():
             uresult.active = True
             db.put(uresult)
             db.delete(result)
-            return '{"response":{"conform": "true"}}'
+            return dict(response=True)
         else:
-            return '{"response":{"conform": "false"}}'    
+            return dict(response=False)
     def login(self, email, password):
-        """do login"""
+        """
+        Authorize a user with credentials.
+
+        Parameters
+        ----------
+        email: Email from user
+
+        password: Password from user
+
+        Returns
+        -------
+        dict - Response 
+            login
+            key
+        """
         if email != '' and password != '':
             password = self.crypt_string(password)    
             query = db.GqlQuery("SELECT * FROM Users WHERE email = :1 AND password = :2", email, password)
@@ -131,18 +334,35 @@ class GaeUsers():
                         else:
                             result.logins = 1
                         result.put()
-                        userkey = email + '_' + str(result.key())
-                        userkey = self.crypt_string(userkey)                        
-                        memcache.add(userkey, str(result.key()))
-                        return '{"login":{"check": "true","key": "' + userkey + '"}}'
+                        userkey = self.set_userkey(email, str(result.key()), True)
+                        return dict(login=True, key=userkey)
                     else:
-                        return '{"login":{"check": "false"}}'
+                        return dict(login=False)
                 else:
-                    return '{"login":{"check": "not active"}}'
+                    return dict(login="not active")
             else:
-                return '{"login":{"check": "unknown"}}'
+                return dict(login="unknown")
         else:
-            return '{"login":{"check":"empty"}}'
+            return dict(login="empty")
     def logout(self, key):
-        """do logout"""
+        """
+        Delete key from memcache.
+
+        Parameters
+        ----------
+        key: key in memcache to delete
+        """
+        memcache.delete(key)
+    def deleteaccount(self, key):
+        """
+        Delete a user account.
+
+        Parameters
+        ----------
+        key: key in memcache for the user to delete
+        """
+        userkey = memcache.get(key)        
+        u_query = db.GqlQuery("SELECT * FROM Users WHERE __key__ = :1", db.Key(userkey))
+        user = u_query.get()
+        db.delete(user)
         memcache.delete(key)

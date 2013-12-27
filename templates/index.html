@@ -1,53 +1,69 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>Main</title>
+        <title>{{title}}</title>
         <meta charset="utf-8">
         <link href="css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
-        <div class="container">	      
-            <h1>Mainpage</h1>	 
-            <div class="row">		
+        <div class="container">	 
+            {% block indexcontent %}   	 
+            <div style="text-align:right;">
+                <a href="/?locale=en">English</a> | 
+                <a href="/?locale=zh">中文</a>
+            </div>            
+            <h1>{{headline}}</h1>
+            <div class="row">	
                 <div class="span6"> 		  
                     <form class="form-horizontal" action="/login" method="post">  
                         <fieldset>  
-                            <legend>Loginform</legend>  
+                            <legend>{{login}}</legend>  
                             <div class="control-group">
-                                <input type="text" name="email" class="span3" placeholder="email" required="true">
+                                <input type="text" name="email" class="span3" placeholder="{{email}}" required="true">
                             </div>
                             <div class="control-group">
-                                <input type="password" name="password" class="span3" placeholder="password" required="true">
+                                <input type="password" name="password" class="span3" placeholder="{{password}}" required="true">
                             </div>
                             <div class="control-group">
-                                <button type="submit" class="btn btn-primary">Login</button> 
-                                <a class="btn" href="/losepassword">Lose password</a>
+                                <button type="submit" class="btn btn-primary">{{loginbtn}}</button> 
                             </div>
-                            <div class="control-group"><span>{{msg}}</span></div>  
+                            <div class="control-group">
+                                <a class="btn" href="/losepassword">{{losepw}}</a>
+                            </div>
+                            <div class="control-group">
+                                <span{% if error %} class="lead text-error"{% endif %}>
+                                    {{msg}}
+                                </span>
+                            </div>  
                         </fieldset>
                     </form>  
                 </div>
                 <div class="span6"> 		  
                     <form class="form-horizontal" action="/register" method="post">  
                         <fieldset>  
-                            <legend>Registerform</legend>  
+                            <legend>{{register}}</legend>  
                             <div class="control-group">
-                                <input type="text" name="email" class="span3" placeholder="email" required="true">
+                                <input type="text" name="email" class="span3" placeholder="{{email}}" required="true">
                             </div>
                             <div class="control-group">
-                                <input type="password" name="password" class="span3" placeholder="password" required="true">
+                                <input type="password" name="password" class="span3" placeholder="{{password}}" required="true">
                             </div>
                             <div class="control-group">
-                                <input type="password" name="repassword" class="span3" placeholder="password (repeat)" required="true">
+                                <input type="password" name="repassword" class="span3" placeholder="{{repassword}}" required="true">
                             </div>
                             <div class="control-group">
-                                <button type="submit" class="btn btn-primary">Register</button>
+                                <button type="submit" class="btn btn-primary">{{registerbtn}}</button>
                             </div> 
-                            <div class="control-group"><span>{{rmsg}}</span></div>
+                            <div class="control-group">
+                                <span{% if error %} class="lead text-error"{% endif %}>
+                                    {{rmsg}}
+                                </span>
+                            </div>
                         </fieldset>
                     </form>  
                 </div>
             </div>
+            {% endblock %}
         </div>  
     </body>
 </html>

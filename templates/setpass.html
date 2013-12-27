@@ -1,15 +1,14 @@
-{% extends "templates/profile.html" %}
-{% block profilecontent %}
+{% extends "templates/index.html" %}
+{% block indexcontent %}
     <div style="text-align:right;">
-        <a href="/changepassword?locale=en">English</a> | 
-        <a href="/changepassword?locale=zh">中文</a>
+        <a href="/setpassword?locale=en">English</a> | 
+        <a href="/setpassword?locale=zh">中文</a>
     </div>
-    <form class="form-horizontal" action="/changepassword" method="post">  
-        <input type="hidden" name="key" value="{{key}}">
-        <fieldset>  
-            <div class="control-group">
-                <input type="password" name="passwordold" class="span3" placeholder="{{oldpassword}}" required="true">
-            </div>
+    <h1>{{title}}</h1>
+    <form class="form-horizontal" action="/setpassword" method="post">  
+        <input type="hidden" name="link" value="{{link}}">
+        <fieldset>
+            <legend>{{title}}</legend>
             <div class="control-group">
                 <input type="password" name="newpassword" class="span3" placeholder="{{newpassword}}" required="true">
             </div>
@@ -19,11 +18,16 @@
             <div class="control-group">
                 <button type="submit" class="btn btn-primary">{{title}}</button>
             </div>
+            {% if btn %}
+            <div class="control-group">
+                <a class="btn" href="/">{{back}}</a>
+            </div>
+            {% endif %}
             <div class="control-group">
                 <span{% if error %} class="lead text-error"{% endif %}>
                     {{msg}}
                 </span>
-            </div>	
+            </div>
         </fieldset>
     </form>  		  
 {% endblock %}

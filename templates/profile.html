@@ -1,16 +1,40 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>Profile</title>
+        <title>{{title}}</title>
         <meta charset="utf-8">
         <link href="css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
-        <div class="container">	
-            <h1>Profilepage</h1>
-            <p>{{email}}</p>
-            <a class="btn" href="/changepassword">Change password</a> 
-            <a class="btn" href="/logout">Logout</a>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+          <div class="navbar-inner">
+            <div class="container">
+              <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <span class="brand">{{title}}</span>              
+              <div class="nav-collapse collapse">
+                <ul class="nav">
+                  <li><a href="#">{{email}}</a></li>
+                  <li><a href="/changepassword">{{changepw}}</a></li>
+                  <li><a href="/delaccount">{{delaccount}}</a></li>
+                  <li><a href="/logout">{{logout}}</a></li>
+                </ul>
+              </div><!--/.nav-collapse -->
+            </div>
+          </div>
+        </div>
+        <div class="container">
+            <br><br><br>                        
+            {% block profilecontent %}
+                <div style="text-align:right;">
+                    <a href="/?locale=en">English</a> | 
+                    <a href="/?locale=zh">中文</a>
+                </div>
+                <h1>{{headline}}</h1>
+            {% endblock %}            
         </div>
     </body>
 </html>
