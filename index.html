@@ -33,7 +33,11 @@
 <p>The gaeusers module offers you a basic user management for apps which running on App Engine Cloud.</p>
 
 <pre><code>from gaeusers import *
-options = {'appid': '<app-id>', 'mailstring': 'your_name &lt;your_mail&gt;', 'crypt':'md5'}
+options = {'appid': 'gaeusers',
+           'mailstring': 'your_name <your_email>',
+           'crypt':'md5',
+           'crypt_rounds': 10,
+           'password_salt':'xyz987'}
 gaeusers = GaeUsers(options)
 </code></pre>
 
@@ -54,6 +58,14 @@ gaeusers = GaeUsers(options)
       <td>crypt</td>
       <td>md5 | sha1</td>
     </tr>
+    <tr>
+      <td>crypt_rounds</td>
+      <td>How often the password gets crypt.</td>
+    </tr>
+    <tr>
+      <td>password_salt</td>
+      <td>Salt with gets added to the password.</td>
+    </tr>
 </table>
 
 <p>After creating an instance of gaeusers, it offers the following methods.</p>
@@ -61,40 +73,39 @@ gaeusers = GaeUsers(options)
 <strong>Register</strong>
 <pre><code>response = gaeusers.register(email)</code></pre>
 <p>Responses:</p>
-<pre><code>{"register":{"check":"not equal"}}
-{"register":{"check":"not valid"}}
-{"register":{"check":"present"}}
-{"register":{"check":"true", "key": "&lt;userkey>"}}
-{"register":{"check":"empty"}}
-{"register":{"check":"end"}}</code></pre>
+<pre><code>dict(register=False, error="not equal")
+dict(register=False, error="not valid")
+dict(register=False, error="present")
+dict(register=True, key="&lt;userkey>")
+dict(register=False, error="empty")</code></pre>
 <hr>
 <strong>Login</strong>
 <pre><code>response = gaeusers.login(email, password)</code></pre>
 <p>Responses:</p>
-<pre><code>{"login":{"check": "true","key": "&lt;userkey>"}}
-{"login":{"check": "false"}}
-{"login":{"check": "not active"}}
-{"login":{"check": "unknown"}}
-{"login":{"check":"empty"}}</code></pre>
+<pre><code>dict(login=True, key="&lt;userkey>")
+dict(login=False)
+dict(login="not active")
+dict(login="unknown")
+dict(login="empty")</code></pre>
 <hr>
 <strong>Conform</strong>
 <pre><code>response = gaeusers.conform(confirm_link)</code></pre>
 <p>Responses:</p>
-<pre><code>{"conform": "true"}
-{"conform": "false"}</code></pre>
+<pre><code>dict(response=True)
+dict(response=False)</code></pre>
 <hr>
 <strong>Lose password</strong>
 <pre><code>response = gaeusers.lose_password(email)</code></pre>
 <p>Responses:</p>
-<pre><code>{"response":{"send":"empty"}}
-{"response":{"send":"true"}}</code></pre>
+<pre><code>dict(response="empty")
+dict(response=True)</code></pre>
 <hr>
 <strong>Change password</strong>
 <pre><code>response = gaeusers.change_password(key, password_old, password_new, password_renew)</code></pre>
 <p>Responses:</p>
-<pre><code>{"response":{"check":"change"}}
-{"response":{"check":"not equal"}}
-{"response":{"check":"wrong"}}</code></pre>
+<pre><code>dict(response="change")
+dict(response="not equal")
+dict(response="wrong")</code></pre>
 
 <hr>
 <strong>Users model</strong>
@@ -105,6 +116,16 @@ gaeusers = GaeUsers(options)
     created = db.DateTimeProperty(auto_now_add=True)
     logins = db.IntegerProperty()
     lastlogin = db.DateTimeProperty(auto_now=True)</code></pre>
+<hr>
+<strong>ActiveLinks and PasswordLinks models</strong>
+<pre><code>
+class ActiveLinks(db.Model):
+    user = db.StringProperty()
+    link = db.StringProperty()
+
+class PasswordLinks(db.Model):
+    user = db.StringProperty()
+    link = db.StringProperty()</code></pre>
 
 <p>How to use it, is shown in <code>main.py</code> templates using the bootstrap framework.</p>
       </section>
