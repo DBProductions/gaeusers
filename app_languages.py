@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-# username 用户名
-responsemsgs = {
+app_languages = {
     'zh': {
         'uiindex' : {
             'title': 'GAE Users',
@@ -39,7 +38,8 @@ responsemsgs = {
             'logout': unicode('退出', 'utf8'),
             'oldpassword': unicode('老密码', 'utf8'),
             'newpassword': unicode('新密码', 'utf8'),
-            'renewpassword': unicode('新密码 (重复)', 'utf8')
+            'renewpassword': unicode('新密码 (重复)', 'utf8'),
+            'lospwBtn': unicode('更改密码', 'utf8')
         },
         'uisetpw': {
             'title': unicode('集新更改密码', 'utf8'),
@@ -122,14 +122,15 @@ responsemsgs = {
             'headline': 'Welcome User'
         },
         'uichangepw': {
-            'title': 'Change Password',
+            'title': 'Change your password',
             'changepw': 'Change Password',
             'delaccount': 'Delete Account',
             'profile': 'Profile',
             'logout': 'Logout',
             'oldpassword': 'old password',
             'newpassword': 'new password',
-            'renewpassword': 'new password (repeat)'
+            'renewpassword': 'new password (repeat)',
+            'lospwBtn': 'Change password'
         },
         'uisetpw': {
             'title': 'Set Password',
@@ -138,7 +139,7 @@ responsemsgs = {
             'back': 'Back'
         },
         'uidelaccount': {
-            'title': 'Delete Account',
+            'title': 'Delete your account',
             'changepw': 'Change Password',
             'delaccount': 'Delete Account',
             'profile': 'Profile',

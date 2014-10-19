@@ -17,10 +17,10 @@
                 <input type="password" name="renewpassword" class="span3" placeholder="{{renewpassword}}" required="true">
             </div>
             <div class="control-group">
-                <button type="submit" class="btn btn-primary">{{title}}</button>
+                <button type="submit" class="btn btn-primary">{{lospwBtn}}</button>
             </div>
             <div class="control-group">
-                <span{% if error %} class="lead text-error"{% endif %}>
+                <span class="lead{% if error %} text-error{% endif %}">
                     {{msg}}
                 </span>
             </div>	

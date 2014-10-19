@@ -1,4 +1,8 @@
-import os, random, re, hashlib
+# -*- coding: utf-8 -*-
+import os
+import random
+import re
+import hashlib
 from google.appengine.ext import db
 from google.appengine.api import mail
 from google.appengine.ext.webapp import template
@@ -38,12 +42,13 @@ class GaeUsers():
             crypt_rounds
             password_salt
         """
-        self.backlink = 'http://' + options['appid'] + '.appspot.com/conform?link='
-        self.passlink = 'http://' + options['appid'] + '.appspot.com/setpassword?link='
+        self.backlink = 'https://' + options['appid'] + '.appspot.com/conform?link='
+        self.passlink = 'https://' + options['appid'] + '.appspot.com/setpassword?link='
         self.password_salt = options['password_salt']
         self.crypt_rounds = options['crypt_rounds']
         self.mailstring = options['mailstring']
         self.crypt = options['crypt']
+
     def check_userkey(self, key):
         """
         Check if user key exists in memcache.
@@ -53,6 +58,7 @@ class GaeUsers():
         key: key in memcache
         """
         return memcache.get(key)
+
     def set_userkey(self, email, db_key, set_cache):
         """
         Set user key.
@@ -62,6 +68,7 @@ class GaeUsers():
         if set_cache == True:
             memcache.add(userkey, str(db_key))
         return userkey 
+
     def get_useremail(self, key):
         """
         Get user email.
@@ -78,6 +85,7 @@ class GaeUsers():
         u_query = db.GqlQuery("SELECT * FROM Users WHERE __key__ = :1", db.Key(key))
         uresult = u_query.get()
         return str(uresult.email)
+
     def get_passworduser(self, link):
         """
         Get user who want to change password.
@@ -96,6 +104,7 @@ class GaeUsers():
             return str(uresult.user)
         else:
             return None
+
     def get_user(self, key):
         """
         Get a user from data store.
@@ -111,6 +120,7 @@ class GaeUsers():
         u_query = db.GqlQuery("SELECT * FROM Users WHERE __key__ = :1", db.Key(key))
         uresult = u_query.get()
         return uresult
+
     def crypt_string(self, string):
         """
         Crypt string
@@ -131,6 +141,7 @@ class GaeUsers():
             for i in range(self.crypt_rounds):
                 crypt_string = hashlib.sha1(self.password_salt + string).hexdigest()
             return crypt_string
+
     def register(self, email, password, repassword, lang, subject):
         """
         Register a user.
@@ -184,7 +195,8 @@ class GaeUsers():
                     mail.send_mail(sender=self.mailstring, to="<"+email+">", subject=subject, body=messagebody)
                     return dict(register=True, key=userkey)
         else:
-            return dict(register=False, error="empty")    
+            return dict(register=False, error="empty")
+
     def lose_password(self, email, lang, subject):
         """
         Lose password request.
@@ -221,6 +233,7 @@ class GaeUsers():
             return dict(response=True)
         else:
             return dict(response="empty")
+
     def set_password(self, link, password, repassword):
         """
         Set a password.
@@ -251,6 +264,7 @@ class GaeUsers():
                 return dict(response='set')
         else:
             return dict(response='not present')
+
     def change_password(self, userkey, passwordold, newpassword, renewpassword):
         """
         Change a password.
@@ -282,6 +296,7 @@ class GaeUsers():
                 return dict(response="not equal")
         else:
             return dict(response="wrong")
+
     def conform(self, link):
         """
         Conform registration and activate the user.
@@ -306,6 +321,7 @@ class GaeUsers():
             return dict(response=True)
         else:
             return dict(response=False)
+
     def login(self, email, password):
         """
         Authorize a user with credentials.
@@ -344,6 +360,7 @@ class GaeUsers():
                 return dict(login="unknown")
         else:
             return dict(login="empty")
+
     def logout(self, key):
         """
         Delete key from memcache.
@@ -353,6 +370,7 @@ class GaeUsers():
         key: key in memcache to delete
         """
         memcache.delete(key)
+
     def deleteaccount(self, key):
         """
         Delete a user account.

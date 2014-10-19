@@ -9,14 +9,14 @@
         <fieldset>
             <div class="control-group">
                 <label class="checkbox">
-                    <input type="checkbox" name="delete" class="span3"> {{title}}
+                    <input type="checkbox" name="delete"> {{title}}
                 </label>
             </div>
             <div class="control-group">
                 <button type="submit" class="btn btn-primary">{{title}}</button>
             </div>
             <div class="control-group">
-                <span{% if error %} class="lead text-error"{% endif %}>
+                <span class="lead{% if error %} text-error{% endif %}">
                     {{msg}}
                 </span>
             </div>	

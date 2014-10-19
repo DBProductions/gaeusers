@@ -10,10 +10,11 @@ handlers:
   upload: favicon\.ico
 
 - url: /css
-  static_dir: css 
+  static_dir: css
 
 - url: .*
   script: main.app
+  secure: always
 
 libraries:
 - name: webapp2

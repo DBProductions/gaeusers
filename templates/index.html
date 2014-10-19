@@ -31,7 +31,7 @@
                                 <a class="btn" href="/losepassword">{{losepw}}</a>
                             </div>
                             <div class="control-group">
-                                <span{% if error %} class="lead text-error"{% endif %}>
+                                <span class="lead{% if error %} text-error{% endif %}">
                                     {{msg}}
                                 </span>
                             </div>  
@@ -55,7 +55,7 @@
                                 <button type="submit" class="btn btn-primary">{{registerbtn}}</button>
                             </div> 
                             <div class="control-group">
-                                <span{% if error %} class="lead text-error"{% endif %}>
+                                <span class="lead{% if error %} text-error{% endif %}">
                                     {{rmsg}}
                                 </span>
                             </div>

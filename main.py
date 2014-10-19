@@ -3,8 +3,8 @@ from gaeusers import *
 from base_handler import *
 
 # options for gaeusers
-options = {'appid': 'gaeusers', 
-           'mailstring': 'your_name <your_email>', 
+options = {'appid': 'gaeusers',
+           'mailstring': 'your_name <your_email>',
            'crypt':'md5',
            'crypt_rounds': 10,
            'password_salt':'xyz987'}
@@ -31,17 +31,18 @@ class LoginHandler(BaseHandler):
         Login a user on request.
         """
         email = self.request.get("email")
-        password = self.request.get("password")        
-        loginresponse = gaeusers.login(email, password)         
-        if 'key' in loginresponse:
-            self.response.headers.add_header('Set-Cookie', 'gaeuserkey='+str(loginresponse['key'])+'; expires=31-Dec-202023:59:59 GMT')
+        password = self.request.get("password")
+        _res = gaeusers.login(email, password)
+        if 'key' in _res:
+            cookie_val = str(_res['key'])+';expires=31-Dec-202023:59:59 GMT'
+            self.response.headers.add_header('Set-Cookie', 'gaeuserkey='+cookie_val)
             self.redirect('/')
         else:
             tpl_data = self.getTplText('uiindex')
-            error_msg =self.getMsgsForKey('login')
-            tpl_data['msg'] = error_msg[str(loginresponse['login'])]
+            error_msg = self.getMsgsForKey('login')
+            tpl_data['msg'] = error_msg[str(_res['login'])]
             tpl_data['error'] = True
-            self.response.out.write(self.getTemp("index.html", tpl_data))            
+            self.response.out.write(self.getTemp("index.html", tpl_data))
 
 class LogoutHandler(BaseHandler):
     def get(self):
@@ -62,14 +63,14 @@ class RegisterHandler(BaseHandler):
         password = self.request.get("password")
         repassword = self.request.get("repassword")
         email_subject = self.getMsgsForKey('mailsubjects')
-        reg_response = gaeusers.register(email, password, repassword, self.getLocale(), email_subject['activate'])
+        _res = gaeusers.register(email, password, repassword, self.getLang(), email_subject['activate'])
         tpl_data = self.getTplText('uiindex')
         error_msg = self.getMsgsForKey('register')
-        if 'key' in reg_response:
+        if 'key' in _res:
             tpl_data['rmsg'] = error_msg['end']
             self.response.out.write(self.getTemp("index.html", tpl_data))
         else:
-            tpl_data['rmsg'] = error_msg[reg_response['error']]
+            tpl_data['rmsg'] = error_msg[_res['error']]
             tpl_data['error'] = True
             self.response.out.write(self.getTemp("index.html", tpl_data))
 
@@ -98,11 +99,11 @@ class LosepasswordHandler(BaseHandler):
         """
         email = self.request.get("email")
         email_subject = self.getMsgsForKey('mailsubjects')
-        response = gaeusers.lose_password(email, self.getLocale(), email_subject['pwchange'])
+        _res = gaeusers.lose_password(email, self.getLang(), email_subject['pwchange'])
         tpl_data = self.getTplText('uilosepw')
         error_msg = self.getMsgsForKey('losepassword')
-        tpl_data['msg'] = error_msg[str(response['response'])]
-        if response['response'] == True:
+        tpl_data['msg'] = error_msg[str(_res['response'])]
+        if _res['response'] == True:
             self.response.out.write(self.getTemp("losepass.html", tpl_data))
         else:
             tpl_data['error'] = True
@@ -159,9 +160,9 @@ class SetPasswordHandler(BaseHandler):
         user = gaeusers.get_passworduser(link)
         if user is not None:
             userObj = gaeusers.get_user(user)
-            response = gaeusers.set_password(link, newpassword, renewpassword)
-            tpl_data['msg'] = error_msg[response['response']]
-            if response['response'] == 'set':
+            _res = gaeusers.set_password(link, newpassword, renewpassword)
+            tpl_data['msg'] = error_msg[_res['response']]
+            if _res['response'] == 'set':
                 tpl_data['btn'] = True
         else:
             tpl_data['error'] = 'true'
@@ -193,13 +194,13 @@ class ChangepasswordHandler(BaseHandler):
         passwordold = self.request.get("passwordold")
         newpassword = self.request.get("newpassword")
         renewpassword = self.request.get("renewpassword")        
-        response = gaeusers.change_password(key, passwordold, newpassword, renewpassword)
+        _res = gaeusers.change_password(key, passwordold, newpassword, renewpassword)
         tpl_data = self.getTplText('uichangepw')
         error_msg = self.getMsgsForKey('changepassword')
         tpl_data['email'] = email
-        tpl_data['msg'] = error_msg[response['response']]
+        tpl_data['msg'] = error_msg[_res['response']]
         tpl_data['key'] = key
-        if 'change' != response['response']:
+        if 'change' != _res['response']:
             tpl_data['error'] = True
         self.response.out.write(self.getTemp("changepass.html", tpl_data))
         
