@@ -7,15 +7,15 @@
     <form class="form-horizontal" action="/delaccount" method="post">  
         <input type="hidden" name="key" value="{{key}}">
         <fieldset>
-            <div class="control-group">
+            <div class="form-group">
                 <label class="checkbox">
                     <input type="checkbox" name="delete"> {{title}}
                 </label>
             </div>
-            <div class="control-group">
+            <div class="form-group">
                 <button type="submit" class="btn btn-primary">{{title}}</button>
             </div>
-            <div class="control-group">
+            <div class="form-group">
                 <span class="lead{% if error %} text-error{% endif %}">
                     {{msg}}
                 </span>

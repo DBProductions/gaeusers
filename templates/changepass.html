@@ -4,26 +4,30 @@
         <a href="/changepassword?locale=en">English</a> | 
         <a href="/changepassword?locale=zh">中文</a>
     </div>
-    <form class="form-horizontal" action="/changepassword" method="post">  
-        <input type="hidden" name="key" value="{{key}}">
-        <fieldset>  
-            <div class="control-group">
-                <input type="password" name="passwordold" class="span3" placeholder="{{oldpassword}}" required="true">
-            </div>
-            <div class="control-group">
-                <input type="password" name="newpassword" class="span3" placeholder="{{newpassword}}" required="true">
-            </div>
-            <div class="control-group">
-                <input type="password" name="renewpassword" class="span3" placeholder="{{renewpassword}}" required="true">
-            </div>
-            <div class="control-group">
-                <button type="submit" class="btn btn-primary">{{lospwBtn}}</button>
-            </div>
-            <div class="control-group">
-                <span class="lead{% if error %} text-error{% endif %}">
-                    {{msg}}
-                </span>
-            </div>	
-        </fieldset>
-    </form>  		  
+    <div class="row">   
+        <div class="col-md-3">
+            <form class="form-horizontal" action="/changepassword" method="post">  
+                <input type="hidden" name="key" value="{{key}}">
+                <fieldset>  
+                    <div class="form-group">
+                        <input type="password" name="passwordold" class="form-control" placeholder="{{oldpassword}}" required="true">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="newpassword" class="form-control" placeholder="{{newpassword}}" required="true">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="renewpassword" class="form-control" placeholder="{{renewpassword}}" required="true">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">{{lospwBtn}}</button>
+                    </div>
+                    <div class="form-group">
+                        <span class="lead{% if error %} text-error{% endif %}">
+                            {{msg}}
+                        </span>
+                    </div>  
+                </fieldset>
+            </form>
+        </div>          
+    </div>  
 {% endblock %}

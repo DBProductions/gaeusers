@@ -1,36 +1,36 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <title>{{title}}</title>
         <meta charset="utf-8">
         <link href="css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
-        <div class="container">	 
-            {% block indexcontent %}   	 
+        <div class="container">  
+            {% block indexcontent %}     
             <div style="text-align:right;">
                 <a href="/?locale=en">English</a> | 
                 <a href="/?locale=zh">中文</a>
             </div>            
             <h1>{{headline}}</h1>
-            <div class="row">	
-                <div class="span6"> 		  
+            <div class="row">   
+                <div class="col-md-3">        
                     <form class="form-horizontal" action="/login" method="post">  
                         <fieldset>  
                             <legend>{{login}}</legend>  
-                            <div class="control-group">
-                                <input type="text" name="email" class="span3" placeholder="{{email}}" required="true">
+                            <div class="form-group">
+                                <input type="text" name="email" class="form-control" placeholder="{{email}}" required="true">
                             </div>
-                            <div class="control-group">
-                                <input type="password" name="password" class="span3" placeholder="{{password}}" required="true">
+                            <div class="form-group">
+                                <input type="password" name="password" class="form-control" placeholder="{{password}}" required="true">
                             </div>
-                            <div class="control-group">
+                            <div class="form-group">
                                 <button type="submit" class="btn btn-primary">{{loginbtn}}</button> 
                             </div>
-                            <div class="control-group">
-                                <a class="btn" href="/losepassword">{{losepw}}</a>
+                            <div class="form-group">
+                                <a class="btn btn-default" href="/losepassword">{{losepw}}</a>
                             </div>
-                            <div class="control-group">
+                            <div class="from-group">
                                 <span class="lead{% if error %} text-error{% endif %}">
                                     {{msg}}
                                 </span>
@@ -38,23 +38,24 @@
                         </fieldset>
                     </form>  
                 </div>
-                <div class="span6"> 		  
+                <div class="col-md-1"></div>
+                <div class="col-md-3">        
                     <form class="form-horizontal" action="/register" method="post">  
                         <fieldset>  
                             <legend>{{register}}</legend>  
-                            <div class="control-group">
-                                <input type="text" name="email" class="span3" placeholder="{{email}}" required="true">
+                            <div class="form-group">
+                                <input type="text" name="email" class="form-control" placeholder="{{email}}" required="true">
                             </div>
-                            <div class="control-group">
-                                <input type="password" name="password" class="span3" placeholder="{{password}}" required="true">
+                            <div class="form-group">
+                                <input type="password" name="password" class="form-control" placeholder="{{password}}" required="true">
                             </div>
-                            <div class="control-group">
-                                <input type="password" name="repassword" class="span3" placeholder="{{repassword}}" required="true">
+                            <div class="form-group">
+                                <input type="password" name="repassword" class="form-control" placeholder="{{repassword}}" required="true">
                             </div>
-                            <div class="control-group">
+                            <div class="form-group">
                                 <button type="submit" class="btn btn-primary">{{registerbtn}}</button>
                             </div> 
-                            <div class="control-group">
+                            <div class="form-group">
                                 <span class="lead{% if error %} text-error{% endif %}">
                                     {{rmsg}}
                                 </span>

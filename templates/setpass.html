@@ -5,29 +5,33 @@
         <a href="/setpassword?locale=zh">中文</a>
     </div>
     <h1>{{title}}</h1>
-    <form class="form-horizontal" action="/setpassword" method="post">  
-        <input type="hidden" name="link" value="{{link}}">
-        <fieldset>
-            <legend>{{title}}</legend>
-            <div class="control-group">
-                <input type="password" name="newpassword" class="span3" placeholder="{{newpassword}}" required="true">
-            </div>
-            <div class="control-group">
-                <input type="password" name="renewpassword" class="span3" placeholder="{{renewpassword}}" required="true">
-            </div>
-            <div class="control-group">
-                <button type="submit" class="btn btn-primary">{{title}}</button>
-            </div>
-            {% if btn %}
-            <div class="control-group">
-                <a class="btn" href="/">{{back}}</a>
-            </div>
-            {% endif %}
-            <div class="control-group">
-                <span class="lead{% if error %} text-error{% endif %}">
-                    {{msg}}
-                </span>
-            </div>
-        </fieldset>
-    </form>  		  
+    <div class="row">   
+        <div class="col-md-3">
+            <form class="form-horizontal" action="/setpassword" method="post">  
+                <input type="hidden" name="link" value="{{link}}">
+                <fieldset>
+                    <legend>{{title}}</legend>
+                    <div class="form-group">
+                        <input type="password" name="newpassword" class="form-control" placeholder="{{newpassword}}" required="true">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="renewpassword" class="form-control" placeholder="{{renewpassword}}" required="true">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">{{title}}</button>
+                    </div>
+                    {% if btn %}
+                    <div class="form-group">
+                        <a class="btn btn-default" href="/">{{back}}</a>
+                    </div>
+                    {% endif %}
+                    <div class="form-group">
+                        <span class="lead{% if error %} text-error{% endif %}">
+                            {{msg}}
+                        </span>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
 {% endblock %}

@@ -1,38 +1,29 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <title>{{title}}</title>
         <meta charset="utf-8">
         <link href="css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
-        <div class="navbar navbar-inverse navbar-fixed-top">
-          <div class="navbar-inner">
-            <div class="container">
-              <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <span class="span3 brand">{{title}}</span>              
-              <div class="nav-collapse collapse">
-                <ul class="nav">
-                  <li><a href="/">{{email}}</a></li>
-                  <li><a href="/changepassword">{{changepw}}</a></li>
-                  <li><a href="/delaccount">{{delaccount}}</a></li>
-                  <li><a href="/logout">{{logout}}</a></li>
-                </ul>
-              </div><!--/.nav-collapse -->
-            </div>
-          </div>
-        </div>
-        <div class="container">
-            <br><br><br>                        
-            {% block profilecontent %}
-                <div style="text-align:right;">
-                    <a href="/?locale=en">English</a> | 
-                    <a href="/?locale=zh">中文</a>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <span class="navbar-brand">{{title}}</span>
                 </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/">{{email}}</a></li>
+                        <li><a href="/changepassword">{{changepw}}</a></li>
+                        <li><a href="/delaccount">{{delaccount}}</a></li>
+                        <li><a href="/logout">{{logout}}</a></li>
+                    </ul>
+                    <p class="navbar-text navbar-right"><a href="/?locale=en">English</a> | <a href="/?locale=zh">中文</a></p>
+                </div>                
+            </div>
+        </nav>
+        <div class="container">
+            {% block profilecontent %}
                 <h1>{{headline}}</h1>
             {% endblock %}            
         </div>

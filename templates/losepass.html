@@ -5,23 +5,27 @@
         <a href="/losepassword?locale=zh">中文</a>
     </div>
     <h1>{{title}}</h1>
-    <form class="form-horizontal" action="/losepassword" method="post">  
-        <fieldset>  
-            <legend>{{title}}</legend>  
-            <div class="control-group">
-                <input type="text" name="email" class="span3" placeholder="{{email}}" required="true">
-            </div>
-            <div class="control-group">
-                <button type="submit" class="btn btn-primary">{{send}}</button>
-            </div>
-            <div class="control-group">
-                <a class="btn" href="/">{{back}}</a>
-            </div>
-            <div class="control-group">
-                <span class="lead{% if error %} text-error{% endif %}">
-                    {{msg}}
-                </span>
-            </div>	
-        </fieldset>
-    </form>  		  
+    <div class="row">   
+        <div class="col-md-3">
+            <form class="form-horizontal" action="/losepassword" method="post">  
+                <fieldset>  
+                    <legend>{{title}}</legend>  
+                    <div class="form-group">
+                        <input type="text" name="email" class="form-control" placeholder="{{email}}" required="true">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">{{send}}</button>
+                    </div>
+                    <div class="form-group">
+                        <a class="btn btn-default" href="/">{{back}}</a>
+                    </div>
+                    <div class="control-group">
+                        <span class="lead{% if error %} text-error{% endif %}">
+                            {{msg}}
+                        </span>
+                    </div>	
+                </fieldset>
+            </form>  		  
+        </div>
+    </div>
 {% endblock %}
