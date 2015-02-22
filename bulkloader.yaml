@@ -26,7 +26,8 @@ transformers:
 - kind: Users
   connector: csv
   connector_options:
-    # TODO: Add connector options here--these are specific to each connector.
+    encoding: utf-8
+    columns: from_header
   property_map:
     - property: __key__
       external_name: key

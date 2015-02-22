@@ -11,6 +11,10 @@ The languages are defined in `app_languages.py`.
 
 A set of basic templates are defined, email templates are in a subfolder.
 
+To download the entries as CSV from the Data Store, the `remote_api` is enabled and a `bulkloader.yaml` is included.
+
+    appcfg.py download_data --url=http://<app-id>.appspot.com/_ah/remote_api --filename=users.csv --config_file=bulkloader.yaml --kind=Users
+
 ### Documentation:  
 [GitHub Page](http://dbproductions.github.com/gaeusers/)
 
